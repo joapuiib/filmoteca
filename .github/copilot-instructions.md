@@ -25,18 +25,6 @@ Repository is small and can be fully analyzed.
 There is no build or execution process.  
 Copilot should analyze the files directly.
 
-Steps:
-1. Read the content of `README.md` files in `llibres/`, `pelicules/`, and `series/`.  
-   - These define the expected format for each entry type.
-2. Iterate through all files in each folder (excluding `README.md`).
-3. For each file:
-   - Check if the required fields specified by the corresponding README are present and in the correct order.
-   - Ensure the content is not empty or incomplete.
-4. Maintain a record of all titles, authors, and file names found.
-5. Verify that there are no duplicates among them.
-6. Report files with errors or inconsistencies.
-    - Titles should be human readable and do not need to match the filename.
-
 Do not execute any commands or create any scripts.  
 All verification should be done internally by Copilot's analysis.
 
@@ -69,14 +57,56 @@ Validation relies solely on matching files to the formats documented in the `REA
 
 </ProjectLayout>
 
+<LanguageMapping>
+
+Entries may be written in Catalan, Spanish, or English. The language of an entry can differ from the language of the README, but **all headings and field names within a single file must use the same language**.
+
+Use the following allowlist when validating headings and field names. Treat each row as a set of equivalent terms — any one of them is acceptable for that concept:
+
+### `llibres/` — Section headings
+
+| Concept       | Catalan           | Spanish            | English       |
+|---------------|-------------------|--------------------|---------------|
+| Synopsis      | `## Sinopsi`      | `## Sinopsis`      | `## Synopsis` |
+| Genres        | `## Gèneres`      | `## Géneros`       | `## Genres`   |
+
+### `llibres/` — Field names
+
+| Concept          | Catalan                 | Spanish                  | English       |
+|------------------|-------------------------|--------------------------|---------------|
+| Author           | `__Autor__`             | `__Autor__`              | `__Author__`  |
+| Publication year | `__Any de publicació__` | `__Año de publicación__` | `__Year__`    |
+
+### `pelicules/` — Section headings
+
+| Concept       | Catalan             | Spanish            | English       |
+|---------------|---------------------|--------------------|---------------|
+| Synopsis      | `## Sinopsi`        | `## Sinopsis`      | `## Synopsis` |
+| Genres        | `## Gèneres`        | `## Géneros`       | `## Genres`   |
+| Cast          | `## Repartiment`    | `## Reparto`       | `## Cast`     |
+
+### `series/` — Section headings
+
+| Concept       | Catalan             | Spanish            | English       |
+|---------------|---------------------|--------------------|---------------|
+| Synopsis      | `## Sinopsi`        | `## Sinopsis`      | `## Synopsis` |
+| Genres        | `## Gèneres`        | `## Géneros`       | `## Genres`   |
+| Seasons       | `## Temporades`     | `## Temporadas`    | `## Seasons`  |
+| Cast (opt.)   | `## Repartiment`    | `## Reparto`       | `## Cast`     |
+
+_Note_: Treat **Seasons/Temporades** as a core section for series if the `series/README.md` specifies it. The **Cast** section is optional and should only be required if explicitly indicated by the `series/README.md`.
+</LanguageMapping>
+
 <StepsToFollow>
 
 1. Examine all contents of the `filmoteca` repository.
-2. Read all `README.md` files to understand the expected format for each type of entry.
+2. Read all `README.md` files to understand the **required sections and fields** for each type of entry (treat the README as defining the structure conceptually, not as providing the exact heading strings to match).
 3. List all files in `llibres/`, `pelicules/`, and `series/` (ignoring `README.md`).
 4. For each file:
-   - Compare its content against the format specified in the corresponding README.
-   - Identify missing, incorrect, or misordered fields.
+   - Verify that all required sections and fields are present, using the language mapping in `<LanguageMapping>` to accept any valid language variant for each concept.
+   - Identify missing, incorrect, or misordered sections/fields.
+   - Check that the language is consistent within the file: all headings and field names must use the same language (Catalan, Spanish, or English).
+   - The language of the file may differ from the language of the README.
 5. Detect potential duplicates based on:
    - title,
    - file name,
@@ -87,6 +117,6 @@ Validation relies solely on matching files to the formats documented in the `REA
    - Duplicate entries ❌ (indicating affected files)
 7. Do not generate or execute any code or modify any files.
 8. Use internal analysis of the repository. Only perform additional searches if the instructions are incomplete or contradictory.
-9. Treat the `README.md` files as the authoritative source for correct format.
+9. Treat the `README.md` files as the authoritative source for **which sections and fields are required**; use the `<LanguageMapping>` table to determine valid heading/field names for each supported language.
 
 </StepsToFollow>
